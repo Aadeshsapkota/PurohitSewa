@@ -1,0 +1,23 @@
+{
+  "name": "poojabooking",
+  "version": "1.0.0",
+  "description": "A web application for booking pooja",
+  "homepage": "https://github.com/Aadeshsapkota/PurohitSewa#readme",
+  "bugs": {
+    "url": "https://github.com/Aadeshsapkota/PurohitSewa/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aadeshsapkota/PurohitSewa.git"
+  },
+  "license": "ISC",
+  "author": "Ankit Acharya , Aadesh Sharma",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
