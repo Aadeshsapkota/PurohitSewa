@@ -1,0 +1,166 @@
+*{
+          box-sizing: border-box;
+        }
+
+        .hero-page {
+          width: 100%;
+          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+          background: #fdf8ef;
+          color: #3b0a1a;
+          overflow-x: hidden;
+        }
+
+        /* ---------- Top ribbon ---------- */
+        .top-ribbon {
+          background: linear-gradient(120deg, #3b0a1a 0%, #5c1224 60%, #7a1b2b 100%);
+          color: #ffe8b8;
+          text-align: center;
+          font-size: 12px;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          font-weight: 600;
+          padding: 10px 16px;
+        }
+
+        /* ---------- Section shell ---------- */
+        .section {
+          padding: 80px 24px;
+          max-width: 1080px;
+          margin: 0 auto;
+        }
+
+        .section-eyebrow {
+          text-align: center;
+          font-size: 12px;
+          letter-spacing: 2.5px;
+          text-transform: uppercase;
+          color: #b5451b;
+          font-weight: 700;
+          margin: 0 0 10px;
+        }
+
+        .section-heading {
+          text-align: center;
+          font-size: 30px;
+          font-weight: 800;
+          color: #3b0a1a;
+          margin: 0 0 46px;
+        }
+
+        /* ---------- Shloka section ---------- */
+        .shloka-grid {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 26px;
+        }
+
+        .shloka-card {
+          flex: 1 1 320px;
+          background: linear-gradient(180deg, #3b0a1a 0%, #5c1224 100%);
+          border-radius: 18px;
+          padding: 32px 30px;
+          position: relative;
+          box-shadow: 0 18px 40px rgba(59, 10, 26, 0.25);
+        }
+
+        .shloka-mark {
+          position: absolute;
+          top: 18px;
+          right: 24px;
+          font-size: 26px;
+          color: rgba(255, 209, 102, 0.35);
+        }
+
+        .shloka-sanskrit {
+          font-size: 19px;
+          line-height: 1.9;
+          color: #ffe8b8;
+          font-style: italic;
+          border-left: 3px solid #d4900f;
+          padding-left: 18px;
+          margin: 0 0 18px;
+        }
+
+        .shloka-translation {
+          font-size: 14px;
+          line-height: 1.7;
+          color: #f2d9c2;
+          margin: 0;
+        }
+
+        .shloka-label {
+          margin-top: 18px;
+          font-size: 11px;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          color: #ffd166;
+          font-weight: 700;
+        }
+        /* ---------- Responsive ---------- */
+        @media (max-width: 860px) {
+          .profile-card {
+            flex-direction: column;
+            text-align: center;
+            padding: 32px 26px;
+          }
+
+          .profile-badges {
+            justify-content: center;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .hero-section {
+            padding: 70px 20px 80px;
+          }
+
+          .hero-title {
+            font-size: 32px;
+          }
+
+          .hero-subtitle {
+            font-size: 15px;
+          }
+
+          .section {
+            padding: 56px 18px;
+          }
+
+          .section-heading {
+            font-size: 24px;
+            margin-bottom: 32px;
+          }
+
+          .profile-image-wrap {
+            width: 180px;
+            height: 180px;
+          }
+
+          .profile-name {
+            font-size: 22px;
+          }
+
+          .shloka-sanskrit {
+            font-size: 17px;
+          }
+
+          .trust-strip {
+            gap: 26px;
+            padding: 30px 18px 50px;
+          }
+
+          .footer-cta h2 {
+            font-size: 21px;
+          }
+        }
+
+        @media (max-width: 400px) {
+          .cta-btn {
+            width: 100%;
+            text-align: center;
+          }
+
+          .hero-title {
+            font-size: 27px;
+          }
+        }

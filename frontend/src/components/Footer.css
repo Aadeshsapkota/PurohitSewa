@@ -1,0 +1,25 @@
+   /* ---------- Footer CTA ---------- */
+        .footer-cta {
+          background: linear-gradient(120deg, #3b0a1a 0%, #5c1224 60%, #7a1b2b 100%);
+          text-align: center;
+          padding: 64px 24px;
+          color: #fff8ef;
+        }
+
+        .footer-cta h2 {
+          font-size: 26px;
+          margin: 0 0 12px;
+        }
+
+        .footer-cta p {
+          font-size: 14px;
+          color: #f2d9c2;
+          margin: 0 0 28px;
+        }
+
+        .footer-org {
+          margin-top: 40px;
+          font-size: 12px;
+          color: rgba(255, 248, 239, 0.55);
+          letter-spacing: 0.5px;
+        }
