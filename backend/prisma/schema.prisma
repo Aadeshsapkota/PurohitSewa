@@ -11,3 +11,18 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Booking{
+  id Int @id @default(autoincrement())
+  customerName String
+  poojaType String
+  location String
+  phoneNo String
+  poojaTime DateTime
+ 
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("bookings")
+
+}
