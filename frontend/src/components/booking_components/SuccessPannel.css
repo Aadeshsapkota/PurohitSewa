@@ -1,0 +1,30 @@
+ .success-panel {
+          padding: 56px 32px;
+          text-align: center;
+        }
+
+        .success-icon {
+          width: 60px;
+          height: 60px;
+          margin: 0 auto 14px;
+          border-radius: 50%;
+          background: linear-gradient(120deg, #b5451b 0%, #d4900f 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 28px;
+          color: #fff8ef;
+        }
+
+        .success-title {
+          color: #5c1224;
+          font-size: 22px;
+          font-weight: 700;
+          margin: 0 0 8px;
+        }
+
+        .success-detail {
+          color: #7a5b45;
+          font-size: 14px;
+          margin: 0;
+        }

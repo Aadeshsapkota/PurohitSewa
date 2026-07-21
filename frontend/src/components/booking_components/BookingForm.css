@@ -1,0 +1,108 @@
+      .booking-form {
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .field label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #5c1224;
+      }
+
+      .poojaname {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 16px;
+        font-family: inherit;
+        color: #333;
+        background-color: #fff;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        outline: none;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        /* Custom dropdown arrow */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M3.2 5.5l4.8 5 4.8-5z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        background-size: 14px;
+        padding-right: 45px;
+      }
+
+      .poojaname:hover {
+        border-color: #f57c00;
+      }
+
+      .poojaname:focus {
+        border-color: #f57c00;
+        box-shadow: 0 0 0 3px rgba(245, 124, 0, 0.2);
+      }
+
+      .poojaname option {
+        color: #333;
+        background: #fff;
+      }
+
+      .field input {
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1.5px solid #e3c79a;
+        background: #fffdf9;
+        font-size: 15px;
+        color: #3b0a1a;
+        outline: none;
+        width: 100%;
+      }
+
+      .field input:focus {
+        border-color: #d4900f;
+        box-shadow: 0 0 0 3px rgba(212, 144, 15, 0.18);
+      }
+
+      .row-two {
+        display: flex;
+        gap: 14px;
+      }
+
+      .row-two .field {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .error-message {
+        background: #ffe4e1;
+        border: 1px solid #d9534f;
+        color: #8a1c1c;
+        font-size: 13px;
+        padding: 10px 12px;
+        border-radius: 8px;
+      }
+
+      .submit-btn {
+        margin-top: 4px;
+        padding: 13px 20px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(120deg, #b5451b 0%, #d4900f 100%);
+        color: #fff8ef;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }

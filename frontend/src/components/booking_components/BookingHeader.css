@@ -1,0 +1,18 @@
+        .booking-header {
+          padding: 30px 28px 24px;
+          text-align: center;
+          background: linear-gradient(120deg, #b5451b 0%, #d4900f 100%);
+        }
+
+        .booking-title {
+          color: #fff8ef;
+          font-size: 24px;
+          font-weight: 700;
+          margin: 0 0 6px;
+        }
+
+        .booking-subtitle {
+          color: #fbe4c4;
+          font-size: 13px;
+          margin: 0;
+        }
