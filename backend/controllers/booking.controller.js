@@ -46,3 +46,60 @@ export const createBooking = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+export const getBookings = async (req, res) => {
+    try {
+        const bookings = await prisma.booking.findMany();
+        // Decrypt the location and phone number before sending the response
+        const decryptedBookings = bookings.map(booking => ({
+            ...booking,
+            location: decrypt(booking.location),
+            phoneNo: decrypt(booking.phoneNo)
+        }));
+        res.status(200).json(decryptedBookings);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};  
+
+
+export const getBookingById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const booking = await prisma.booking.findUnique({
+            where: { id: parseInt(id) }
+        });
+
+        if (!booking) {
+            return res.status(404).json({ error: "Booking not found" });
+        }
+
+        // Decrypt the location and phone number before sending the response
+        const decryptedBooking = {
+            ...booking,
+            location: decrypt(booking.location),
+            phoneNo: decrypt(booking.phoneNo)
+        };
+
+        res.status(200).json(decryptedBooking);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const deleteBooking = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const booking = await prisma.booking.delete({
+            where: { id: parseInt(id) }
+        });
+
+        if (!booking) {
+            return res.status(404).json({ error: "Booking not found" });
+        }
+
+        res.status(200).json({ message: "Booking deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
