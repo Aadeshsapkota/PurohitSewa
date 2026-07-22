@@ -1,0 +1,293 @@
+
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dashboard-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.reminder-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.reminder-btn:hover {
+    background: #f2f2f2;
+}
+
+.reminder-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #e0453c;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    grid-template-rows: auto 1fr;
+    gap: 16px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+/* Total booking card */
+.total-booking-card {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.total-count {
+    font-size: 36px;
+    font-weight: 700;
+    color: #e8a33d;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.stat-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #555;
+}
+
+.stat-icon.completed {
+    color: #2e9e5b;
+}
+
+.stat-icon.pending {
+    color: #d99b2b;
+}
+
+/* Upcoming bookings card */
+.upcoming-card {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+}
+
+/* Pooja today card */
+.pooja-today-card {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.booking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.booking-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.booking-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+    font-weight: 500;
+}
+
+.pooja-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.pooja-name {
+    font-size: 11px;
+    font-weight: 400;
+    color: #888;
+}
+
+.booking-datetime {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    color: #666;
+}
+
+.booking-time {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+}
+
+.empty-msg {
+    font-size: 13px;
+    color: #888;
+    padding: 10px 0;
+}
+
+/* Modal / Popup */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: #fff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 420px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    display: flex;
+}
+
+.modal-body {
+    padding: 14px 18px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.reminder-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background: #fdf5e8;
+    border-left: 3px solid #e8a33d;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.reminder-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.days-left {
+    font-size: 11px;
+    font-weight: 600;
+    color: #e8a33d;
+}
+
+.days-left.today {
+    color: #e0453c;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+    }
+
+    .total-booking-card,
+    .upcoming-card,
+    .pooja-today-card {
+        grid-column: 1;
+        grid-row: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 12px 14px;
+    }
+
+    .total-count {
+        font-size: 28px;
+    }
+
+    .booking-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .booking-datetime {
+        align-items: flex-start;
+    }
+}

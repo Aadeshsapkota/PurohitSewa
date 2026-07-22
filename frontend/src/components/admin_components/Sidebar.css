@@ -1,0 +1,280 @@
+.sidebar {
+    width: 248px;
+    min-height: 100vh;
+    background: linear-gradient(180deg, var(--sidebar-bg) 0%, #20100e 100%);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 28px 0 24px;
+    box-shadow: 2px 0 24px rgba(0, 0, 0, 0.25);
+}
+
+/* --- Org header --- */
+
+.org-info {
+    padding: 0 24px 24px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(201, 162, 39, 0.18);
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.diya {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.diya-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.diya-bowl {
+    fill: var(--gold);
+    opacity: 0.9;
+}
+
+.diya-bowl-inner {
+    fill: var(--sidebar-bg);
+}
+
+.diya-flame {
+    fill: var(--flame);
+    transform-origin: 20px 13px;
+    animation: flicker 2.4s ease-in-out infinite;
+    filter: drop-shadow(0 0 4px rgba(255, 138, 61, 0.8));
+}
+
+@keyframes flicker {
+
+    0%,
+    100% {
+        transform: scaleY(1) scaleX(1) rotate(0deg);
+        opacity: 1;
+    }
+
+    45% {
+        transform: scaleY(1.08) scaleX(0.94) rotate(-2deg);
+        opacity: 0.92;
+    }
+
+    70% {
+        transform: scaleY(0.95) scaleX(1.03) rotate(2deg);
+        opacity: 1;
+    }
+}
+
+.org-metadata h5 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 19px;
+    letter-spacing: 0.3px;
+    color: var(--ivory);
+    line-height: 1.2;
+}
+
+.org-metadata h6 {
+    margin: 3px 0 0;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+}
+
+/* --- Nav --- */
+
+.nav-items {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 12px 0;
+}
+
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px 11px 16px;
+    border-radius: 8px;
+    color: var(--ivory-dim);
+    font-size: 14.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease;
+}
+
+.nav-item:hover {
+    background: rgba(201, 162, 39, 0.08);
+    color: var(--ivory);
+}
+
+.nav-indicator {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    border-radius: 0 3px 3px 0;
+    background: var(--gold);
+    transition: height 0.18s ease;
+}
+
+.nav-item.active {
+    background: rgba(201, 162, 39, 0.14);
+    color: var(--ivory);
+}
+
+.nav-item.active .nav-indicator {
+    height: 22px;
+    box-shadow: 0 0 8px rgba(201, 162, 39, 0.7);
+}
+
+.nav-item.active .nav-icon {
+    color: var(--gold-soft);
+}
+
+.nav-icon {
+    color: var(--ivory-dim);
+    flex-shrink: 0;
+    transition: color 0.18s ease;
+}
+
+.nav-item:hover .nav-icon {
+    color: var(--gold-soft);
+}
+
+.nav-label {
+    white-space: nowrap;
+}
+
+
+/* bottom section */
+.bottom-section {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: auto;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.profile-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--accent-color, #e8a33d);
+}
+
+.profile-img {
+    width: 70px;
+    border-radius: 50px;
+}
+
+.profile-meta {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    overflow: hidden;
+}
+
+.profile-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-subtitle {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+@media (max-width: 620px) {
+    .sidebar {
+        width: 72px;
+        padding: 20px 0;
+    }
+
+    .org-metadata,
+    .nav-label {
+        display: none;
+    }
+
+    .left-section {
+        justify-content: center;
+    }
+
+    .org-info {
+        padding: 0 0 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .nav-item {
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .bottom-section {
+        padding: 10px 12px;
+        justify-content: center;
+    }
+
+    .profile-meta {
+        display: none;
+        /* collapse to icon-only on tablets/small screens */
+    }
+
+    .profile-img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .profile {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .bottom-section {
+        padding: 8px;
+    }
+
+    .profile-img {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .diya-flame {
+        animation: none;
+    }
+}

@@ -1,6 +1,5 @@
 import React from 'react'
 import './HeroSection.css'
-import { Link } from 'react-router-dom'
 function HeroSection() {
   return (
     <div>
@@ -17,12 +16,12 @@ function HeroSection() {
           performed with devotion, precision, and care.
         </p>
 
-        <Link
+        <a
           className="cta-btn"
-          to='/booking'
+          href="http://localhost:5173/user"
         >
           Book a Pooja Now
-        </Link>
+        </a>
         <p className="cta-note">Takes less than 2 minutes &middot; No obligation</p>
 
         <div className="hero-divider">

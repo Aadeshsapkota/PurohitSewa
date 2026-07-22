@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Yatra+One&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --sidebar-bg: #2a1512;
+    --sidebar-bg-raised: #35201c;
+    --gold: #c9a227;
+    --gold-soft: #e0bd5e;
+    --ivory: #f3e9db;
+    --ivory-dim: #c9b8a4;
+    --flame: #ff8a3d;
+    --font-display: 'Yatra One', cursive;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.admin {
+    min-height: 100vh;
+    background: #efe8dc;
+    font-family: var(--font-body);
+    display: flex;
+}
+.admin-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: #efe8dc;
+}
+
+
+/* --- Responsive --- */
+
+
+
