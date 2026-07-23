@@ -9,6 +9,7 @@ function Footer() {
         <a className="cta-btn" href="http://localhost:5173/user">
           Book a Pooja Now
         </a>
+        
         <p className="footer-org">Kalika Bhagawati Purohit Sewa &middot; Perth, Australia</p>
       </section>
     </div>
