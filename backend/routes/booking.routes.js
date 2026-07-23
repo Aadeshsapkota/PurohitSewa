@@ -1,9 +1,23 @@
 import express from "express";
-import { createBooking } from "../controllers/booking.controller.js";
+import {
+  createBooking,
+  getBookings,
+  getBookingById,
+  deleteBooking,
+} from "../controllers/booking.controller.js";
 
 const router = express.Router();
 
+// Create booking
 router.post("/bookings", createBooking);
 
-export default router;
+// Get all bookings
+router.get("/bookings", getBookings);
 
+// Get booking by ID
+router.get("/bookings/:id", getBookingById);
+
+// Delete booking
+router.delete("/bookings/:id", deleteBooking);
+
+export default router;
