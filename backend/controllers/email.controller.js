@@ -19,7 +19,7 @@ const sendEmailController = async (payload) => {
 
 const TestEmail = async (req, res) => {
     const payload = {
-        customerName: "aadesh",
+        userName: "aadesh",
         poojaTime: "12:40",
         poojaType: "rudri",
         location: "pokhara",
