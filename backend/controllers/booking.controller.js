@@ -1,5 +1,5 @@
 import prisma from "../utils/prisma.js";
-import { encrypt , decrypt} from "../utils/encryption.js";
+import { encrypt ,decrypt} from "../utils/encryption.js";
 
 export const createBooking = async (req, res) => {
   try {
