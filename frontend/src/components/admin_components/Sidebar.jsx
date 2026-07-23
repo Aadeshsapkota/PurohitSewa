@@ -1,5 +1,6 @@
 import React from 'react'
 import './Sidebar.css'
+import { Link } from "react-router-dom";
 import {
     LayoutDashboard,
     CalendarCheck,
@@ -64,6 +65,7 @@ function Sidebar({ NAV_ITEMS, setActive, active, onNavClick }) {
                     <div className="profile-meta">
                         <span className="profile-title">Bhim Paudel</span>
                         <span className="profile-subtitle">Purohit</span>
+                        <Link to="/">Home</Link>
                     </div>
                 </div>
             </div>

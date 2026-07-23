@@ -21,6 +21,7 @@ function HeroSection() {
           href="http://localhost:5173/user"
         >
           Book a Pooja Now
+Click here to book
         </a>
         <p className="cta-note">Takes less than 2 minutes &middot; No obligation</p>
 
