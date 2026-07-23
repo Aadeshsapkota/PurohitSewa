@@ -1,5 +1,6 @@
 import prisma from "../utils/prisma.js";
 import { encrypt, decrypt } from "../utils/encryption.js";
+import { sendEmailController } from "./email.controller.js";
 
 export const createBooking = async (req, res) => {
     try{
@@ -32,6 +33,19 @@ export const createBooking = async (req, res) => {
                 message: "Invalid pooja date and time.",
             });
             }
+            
+            const payload = {
+                customerName,
+                poojaTime,
+                poojaType,
+                location
+            }
+            try {
+               await sendEmailController(payload);
+            } catch (error) {
+                console.error("Email is not sent") 
+            }
+            
             //Naya Schema banayeww date pani add gara ani migrate gara hai doxt!!!1
         const booking = await prisma.booking.create({
             data: {
@@ -47,3 +61,5 @@ export const createBooking = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+//function to take all the booking details and send it to the send email controller

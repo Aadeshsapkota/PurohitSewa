@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import bookingRoutes from "./routes/booking.routes.js";
-
+import emailRoutes from './routes/email.route.js'
 
 dotenv.config();
 const app = express();
@@ -25,6 +25,7 @@ app.get("/", (req, res) => {
 
 
 app.use("/api/v1", bookingRoutes);
+app.use("/api/v1",emailRoutes);
 
 const PORT = process.env.PORT;
 
