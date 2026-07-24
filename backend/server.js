@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import emailRoutes from './routes/email.route.js'
 
 
 dotenv.config();
@@ -27,7 +26,6 @@ import authRoutes from "./routes/auth.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 
 app.use("/api/v1", bookingRoutes);
-app.use("/api/v1",emailRoutes);
 
 app.use("/api/v1", authRoutes );
 app.use("/api/v1", adminRoutes);
