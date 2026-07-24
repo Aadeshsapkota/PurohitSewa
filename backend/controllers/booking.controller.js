@@ -1,5 +1,6 @@
 import prisma from "../utils/prisma.js";
-import { encrypt } from "../utils/encryption.js";
+import { encrypt, decrypt } from "../utils/encryption.js";
+import { sendEmail } from "../utils/email.js";
 
 export const createBooking = async (req, res) => {
   try {
@@ -83,6 +84,15 @@ const booking = await prisma.booking.create({
     poojaTime,
   },
 });
+
+       await sendEmail({
+      userName,
+      poojaType,
+      location,
+      phoneNo,
+      poojaDate,
+      poojaTime,
+    });
 
     return res.status(201).json({
       success: true,
