@@ -5,6 +5,7 @@ import { isAdmin } from "../middleware/admin.middleware.js";
 
 const router = express.Router();
 
-router.get("/stats", protect, isAdmin, getStats);
+// router.get("/stats", protect, isAdmin, getStats);
+router.get("/stats", getStats);
 
 export default router;
