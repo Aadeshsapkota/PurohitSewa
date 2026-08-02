@@ -109,19 +109,31 @@ const booking = await prisma.booking.create({
 
 
 export const getBookings = async (req, res) => {
-    try {
-        const bookings = await prisma.booking.findMany();
-        // Decrypt the location and phone number before sending the response
-        const decryptedBookings = bookings.map(booking => ({
-            ...booking,
-            location: decrypt(booking.location),
-            phoneNo: decrypt(booking.phoneNo)
-        }));
-        res.status(200).json(decryptedBookings);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};  
+  try {
+    const bookings = await prisma.booking.findMany({
+      orderBy: {
+        poojaDate: "asc",
+      },
+    });
+
+    const decryptedBookings = bookings.map((booking) => ({
+      ...booking,
+      location: decrypt(booking.location),
+      phoneNo: decrypt(booking.phoneNo),
+    }));
+
+    res.status(200).json({
+      success: true,
+      total: decryptedBookings.length,
+      bookings: decryptedBookings,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 
 export const getBookingById = async (req, res) => {
