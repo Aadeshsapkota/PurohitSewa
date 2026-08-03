@@ -65,7 +65,7 @@ function Sidebar({ NAV_ITEMS, setActive, active, onNavClick }) {
                     <div className="profile-meta">
                         <span className="profile-title">Bhim Paudel</span>
                         <span className="profile-subtitle">Purohit</span>
-                        <Link to="/">Home</Link>
+                        <Link to="/" className='home-link'>Home</Link>
                     </div>
                 </div>
             </div>

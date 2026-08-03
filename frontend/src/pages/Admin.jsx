@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import {
     LayoutDashboard,
@@ -24,6 +24,10 @@ const NAV_ITEMS = [
 function Admin() {
     const [active, setActive] = useState('dashboard')
     const navigate = useNavigate()
+
+    useEffect(() => {
+        navigate('/admin/dashboard', { replace: true });
+    }, []);
 
     const handleNavClick = (key, path) => {
         setActive(key)
