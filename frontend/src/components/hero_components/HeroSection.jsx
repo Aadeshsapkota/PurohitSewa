@@ -1,9 +1,10 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import './HeroSection.css'
 function HeroSection() {
   return (
     <div>
-            {/* ---------- Hero ---------- */}
+      {/* ---------- Hero ---------- */}
       <section className="hero-section">
         <div className="hero-om">&#2384;</div>
         <p className="hero-eyebrow">Sacred Rituals &middot; Trusted Guidance</p>
@@ -16,13 +17,11 @@ function HeroSection() {
           performed with devotion, precision, and care.
         </p>
 
-        <a
-          className="cta-btn"
-          href="http://localhost:5173/user"
-        >
+        <Link to="/booking" className="cta-btn">
           Book a Pooja Now
-Click here to book
-        </a>
+        </Link>
+
+
         <p className="cta-note">Takes less than 2 minutes &middot; No obligation</p>
 
         <div className="hero-divider">
