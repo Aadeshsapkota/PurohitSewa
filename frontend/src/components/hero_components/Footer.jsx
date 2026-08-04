@@ -5,14 +5,16 @@ function Footer() {
   return (
     <div>         {/* ---------- Footer CTA ---------- */}
       <section className="footer-cta">
-        <Link to="/admin/login">Admin Login</Link>
+        
         <h2>Ready to Begin Your Sacred Ceremony?</h2>
         <p>Book a pandit in just a few clicks and let tradition come home.</p>
-        <a className="cta-btn" href="http://localhost:5173/user">
+        <Link to='/booking'
+          className="cta-btn" >
           Book a Pooja Now
-        </a>
-        
+        </Link>
         <p className="footer-org">Kalika Bhagawati Purohit Sewa &middot; Perth, Australia</p>
+        <Link to="/adminlogin" className='admin-login'>Admin Login</Link>
+        <Link to="/adminregister" className='admin-login'>Admin Register</Link>
       </section>
     </div>
   )

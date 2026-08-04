@@ -26,3 +26,12 @@
         .cta-btn{
           margin-bottom: 15px
         }
+        .admin-login{
+          text-decoration: none;
+          color: rgb(98, 24, 24);
+          margin-left: 40px;
+        }
+        .admin-login:hover{
+          text-decoration: none;
+          color:white ;
+        }

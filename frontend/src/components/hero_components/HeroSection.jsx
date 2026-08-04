@@ -20,8 +20,7 @@ function HeroSection() {
         <Link to="/booking" className="cta-btn">
           Book a Pooja Now
         </Link>
-
-
+        
         <p className="cta-note">Takes less than 2 minutes &middot; No obligation</p>
 
         <div className="hero-divider">

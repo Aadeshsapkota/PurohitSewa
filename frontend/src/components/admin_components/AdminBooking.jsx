@@ -1,78 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AdminBooking.css";
+import { getBookings } from "../../api/bookingApi";
 
-const initialBookings = [
-  {
-    id: 1,
-    poojaName: "Satyanarayan Pooja",
-    customerName: "Ramesh Sharma",
-    date: "05 Aug 2026",
-    time: "10:00 AM",
-    phone: "98XXXXXX21",
-    location: "Baneshwor, Kathmandu",
-    status: "incomplete",
-  },
-  {
-    id: 2,
-    poojaName: "Griha Pravesh Pooja",
-    customerName: "Sita Koirala",
-    date: "07 Aug 2026",
-    time: "8:30 AM",
-    phone: "98XXXXXX45",
-    location: "Lalitpur",
-    status: "completed",
-  },
-  {
-    id: 3,
-    poojaName: "Rudrabhishek",
-    customerName: "Bikash Thapa",
-    date: "09 Aug 2026",
-    time: "6:00 AM",
-    phone: "98XXXXXX67",
-    location: "Bhaktapur",
-    status: "incomplete",
-  },
-  {
-    id: 4,
-    poojaName: "Navratri Pooja",
-    customerName: "Anita Gurung",
-    date: "12 Aug 2026",
-    time: "9:00 AM",
-    phone: "98XXXXXX89",
-    location: "Patan",
-    status: "completed",
-  },
-  {
-    id: 5,
-    poojaName: "Ganesh Pooja",
-    customerName: "Prakash Rai",
-    date: "14 Aug 2026",
-    time: "11:00 AM",
-    phone: "98XXXXXX12",
-    location: "Kirtipur",
-    status: "incomplete",
-  },
-  {
-    id: 6,
-    poojaName: "Laxmi Pooja",
-    customerName: "Kabita Shrestha",
-    date: "16 Aug 2026",
-    time: "7:00 PM",
-    phone: "98XXXXXX34",
-    location: "Boudha, Kathmandu",
-    status: "cancelled",
-  },
-];
 
-const statusLabel = (status) => status.charAt(0).toUpperCase() + status.slice(1);
+const statusLabel = (status) => {
+  if (!status) return "Pending";
+  return status.charAt(0).toUpperCase() + status.slice(1);
+};
 
 export default function PoojaBookingAdmin() {
-  const [bookings, setBookings] = useState(initialBookings);
+  const [bookings, setBookings] = useState([]);
 
   const updateStatus = (id, newStatus) => {
     setBookings((prev) =>
       prev.map((b) => (b.id === id ? { ...b, status: newStatus } : b))
     );
+  };
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+
+  const fetchBookings = async () => {
+    try {
+      const data = await getBookings();
+
+      if (data.success) {
+        setBookings(
+          data.bookings.map((booking) => ({
+            ...booking,
+            status: booking.status || "pending",
+          }))
+        );
+      }
+    } catch (error) {
+      console.error("Failed to fetch bookings:", error);
+    }
   };
 
   return (
@@ -86,28 +48,28 @@ export default function PoojaBookingAdmin() {
           {bookings.map((booking) => (
             <div key={booking.id} className="card">
               <div className="card-top">
-                <span className="pooja-name">{booking.poojaName}</span>
+                <span className="pooja-name">{booking.poojaType}</span>
                 <span className="om-symbol">{"\u0950"}</span>
               </div>
 
               <div className="detail-row">
-                <span className="detail-label">Customer:</span> {booking.customerName}
+                <span className="detail-label">Customer:</span> {booking.userName}
               </div>
               <div className="detail-row">
-                <span className="detail-label">Date:</span> {booking.date}
+                <span className="detail-label">Date:</span> {new Date(booking.poojaDate).toLocaleDateString()}
               </div>
               <div className="detail-row">
-                <span className="detail-label">Time:</span> {booking.time}
+                <span className="detail-label">Time:</span> {booking.poojaTime}
               </div>
               <div className="detail-row">
-                <span className="detail-label">Phone:</span> {booking.phone}
+                <span className="detail-label">Phone:</span> {booking.phoneNo}
               </div>
               <div className="detail-row">
                 <span className="detail-label">Location:</span> {booking.location}
               </div>
 
               <div className="status-row">
-                <span className={`status ${booking.status}`}>
+                <span className={`status ${booking.status || "pending"}`}>
                   {statusLabel(booking.status)}
                 </span>
 

@@ -1,5 +1,10 @@
 import api from "./axios";
 
+export const createBooking = async (formData) => {
+  const { data } = await api.post("/bookings",formData);
+  return data;
+};
+
 export const getBookings = async () => {
   const { data } = await api.get("/bookings");
   return data;

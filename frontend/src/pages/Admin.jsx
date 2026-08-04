@@ -15,10 +15,7 @@ import Sidebar from '../components/admin_components/Sidebar'
 const NAV_ITEMS = [
     { key: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: 'dashboard' },
     { key: 'booking', label: 'Booking', icon: CalendarCheck, path: 'booking' },
-    { key: 'manage_events', label: 'Manage events', icon: Sparkles, path: 'manage-events' },
-    { key: 'calender', label: 'Calender', icon: CalendarDays, path: 'calender' },
-    { key: 'notification', label: 'Notification', icon: Bell, path: 'notification' },
-    { key: 'reports', label: 'Reports', icon: FileBarChart2, path: 'reports' },
+   
 ]
 
 function Admin() {
