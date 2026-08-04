@@ -7,7 +7,9 @@ import {
   X,
   TrendingUp,
 } from "lucide-react";
-import axios from "axios";
+import {
+  getDashboardStats,
+} from "../../api/adminApi";
 import "./Dashboard.css";
 
 const REMINDER_THRESHOLD_DAYS = 3;
@@ -41,24 +43,22 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [showReminders, setShowReminders] = useState(false);
 
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:3000/api/v1/stats"
-        );
+useEffect(() => {
+  const fetchDashboard = async () => {
+    try {
+      const data = await getDashboardStats();
 
-        setStats(res.data);
-         console.log(res.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+      setStats(data);
+     
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchDashboard();
-  }, []);
+  fetchDashboard();
+}, []);
 
   const nearbyBookings = useMemo(() => {
     return stats.recentBookings

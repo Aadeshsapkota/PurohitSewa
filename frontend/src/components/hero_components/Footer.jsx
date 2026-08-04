@@ -14,7 +14,7 @@ function Footer() {
         </Link>
         <p className="footer-org">Kalika Bhagawati Purohit Sewa &middot; Perth, Australia</p>
         <Link to="/adminlogin" className='admin-login'>Admin Login</Link>
-        <Link to="/adminregister" className='admin-login'>Admin Register</Link>
+        
       </section>
     </div>
   )

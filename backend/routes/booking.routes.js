@@ -10,18 +10,18 @@ import { isAdmin } from "../middleware/admin.middleware.js";
 
 const router = express.Router();
 
-// Create booking
+
 router.post("/bookings", createBooking);
 
 // Get all bookings
-// router.get("/bookings",protect, isAdmin, getBookings);
-router.get("/bookings",getBookings);
+router.get("/bookings",protect, isAdmin, getBookings);
+
 
 // Get booking by ID
-// router.get("/bookings/:id", protect, isAdmin, getBookingById);
-router.get("/bookings/:id", getBookingById);
+ router.get("/bookings/:id", protect, isAdmin, getBookingById);
+
 
 // Delete booking
-// router.delete("/bookings/:id",protect, isAdmin, deleteBooking);
-router.delete("/bookings/:id", deleteBooking);
+router.delete("/bookings/:id",protect, isAdmin, deleteBooking);
+
 export default router;

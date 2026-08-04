@@ -84,25 +84,36 @@ export const login = async (req, res) => {
       });
     }
 
-    const user = await prisma.user.findUnique({
-      where: { username },
-    });
+   const user = await prisma.user.findUnique({
+  where: { username },
+});
 
-    // Security: same message for username/password
-    if (!user) {
-      return res.status(401).json({
-        message: "Invalid username or password",
-      });
-    }
+if (!user) {
+  return res.status(401).json({
+    message: "Invalid username or password",
+  });
+}
 
-    // ✅ FIXED: compare with user.password (hashed)
-    const isMatch = await bcrypt.compare(password, user.password);
-    console.log(isMatch);
-    if (!isMatch) {
-      return res.status(401).json({
-        message: "Invalid username or password",
-      });
-    }
+
+const isMatch = await bcrypt.compare(password, user.password);
+
+
+
+if (!isMatch) {
+  return res.status(401).json({
+    message: "Invalid username or password",
+  });
+}
+
+
+
+if (user.role !== "SUPERADMIN") {
+  return res.status(403).json({
+    success: false,
+    message: "Access denied! Admin only.",
+  });
+}
+
     const token = jwt.sign(
       {
         userId: user.id,
