@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './BookingForm.css';
 import axios from 'axios';
 import { createBooking } from '../../api/bookingApi';
+import { useNavigate } from "react-router-dom";
 
 function BookingForm() {
     const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ function BookingForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isBooked, setIsBooked] = useState(false);
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,50 +28,58 @@ function BookingForm() {
         }));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+   const handleSubmit = async (e) => {
+  e.preventDefault();
 
-        setError("");
-        setIsSubmitting(true);
+  setError("");
+  setIsSubmitting(true);
 
-        try {
-           const response = await createBooking(formData);
-            if (response.data.success) {
-                setIsBooked(true);
-            }
-        } catch (err) {
-            console.error("Booking error:", err);
+  try {
+    const response = await createBooking(formData);
 
-            // Show backend error message if available
-            setError(
-                err.response?.data?.message ||
-                err.response?.data?.error ||
-                "Something went wrong while booking. Please try again."
-            );
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+
+    if (response.success) {
+      setIsBooked(true);
+    } else {
+      setError(response.message || "Booking failed.");
+    }
+  } catch (err) {
+    console.error("Booking error:", err);
+
+    setError(
+      err.response?.data?.message ||
+      err.response?.data?.error ||
+      "Something went wrong while booking. Please try again."
+    );
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
     // Show success message instead of the form
-    if (isBooked) {
-        return (
-            <div className="booking-success">
-                <div className="success-icon">✓</div>
+   if (isBooked) {
+  return (
+    <div className="booking-success">
+      <div className="success-icon">✓</div>
 
-                <h2>Booking Successful!</h2>
+      <h2>Booking Successful!</h2>
 
-                <p>
-                    Your <strong>{formData.poojaType}</strong> booking has been
-                    successfully submitted.
-                </p>
+      <p>
+        Your <strong>{formData.poojaType}</strong> booking has been
+        successfully submitted.
+      </p>
 
-                <p>
-                    We will contact you soon for confirmation.
-                </p>
-            </div>
-        );
-    }
+      <p>We will contact you soon for confirmation.</p>
+
+      <button
+        className="back-home-btn"
+        onClick={() => navigate("/")}
+      >
+        ← Back to Home
+      </button>
+    </div>
+  );
+}
 
     return (
         <div>
