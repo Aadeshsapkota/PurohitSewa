@@ -13,6 +13,8 @@ export const createBooking = async (req, res) => {
       poojaTime,
     } = req.body;
 
+    console.log(userName,poojaDate,poojaTime,poojaType,location);
+
     if (
       !userName ||
       !poojaType ||
@@ -30,7 +32,7 @@ export const createBooking = async (req, res) => {
     if (userName.trim().length < 2) {
       return res.status(400).json({
         success: false,
-        message: "userName  must be at least 2 characters.",
+        message: "userName must be at least 2 characters.",
       });
     }
 
@@ -50,42 +52,50 @@ export const createBooking = async (req, res) => {
       });
     }
 
-const lastBooking = await prisma.booking.findFirst({
-  where: {
-    userName,
-  },
-  orderBy: {
-    createdAt: "desc",
-  },
-});
-
-if (lastBooking) {
-  const now = new Date();
-  const lastTime = new Date(lastBooking.createdAt);
-
-  const diff = now.getTime() - lastTime.getTime();
-  const oneDay = 24 * 60 * 60 * 1000;
-
-  if (diff < oneDay) {
-    return res.status(400).json({
-      message:
-        "You have already booked a Pooja. Please wait 24 hours before booking again, or contact the Guru for assistance.",
+    const lastBooking = await prisma.booking.findFirst({
+      where: {
+        userName,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
-  }
-}
 
-const booking = await prisma.booking.create({
-  data: {
-    userName,
-    poojaType,
-    location: encrypt(location),
-    phoneNo: encrypt(phoneNo),
-    poojaDate: new Date(poojaDate),
-    poojaTime,
-  },
-});
+    if (lastBooking) {
+      const now = new Date();
+      const lastTime = new Date(lastBooking.createdAt);
+      const diff = now.getTime() - lastTime.getTime();
+      const oneDay = 24 * 60 * 60 * 1000;
 
-       await sendEmail({
+      if (diff < oneDay) {
+        return res.status(400).json({
+          message:
+            "You have already booked a Pooja. Please wait 24 hours before booking again, or contact the Guru for assistance.",
+        });
+      }
+    }
+    let booking;
+
+    try {
+      booking = await prisma.booking.create({
+        data: {
+          userName,
+          poojaType,
+          location:encrypt(location),
+          phoneNo:encrypt(phoneNo),
+          poojaDate: new Date(poojaDate),
+          poojaTime,
+        },
+      });
+
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Can't connect to the database: " + error.message,
+      });
+    }
+
+    await sendEmail({
       userName,
       poojaType,
       location,
@@ -106,7 +116,6 @@ const booking = await prisma.booking.create({
     });
   }
 };
-
 
 export const getBookings = async (req, res) => {
   try {
@@ -137,42 +146,42 @@ export const getBookings = async (req, res) => {
 
 
 export const getBookingById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const booking = await prisma.booking.findUnique({
-            where: { id: parseInt(id) }
-        });
+  try {
+    const { id } = req.params;
+    const booking = await prisma.booking.findUnique({
+      where: { id: parseInt(id) }
+    });
 
-        if (!booking) {
-            return res.status(404).json({ error: "Booking not found" });
-        }
-
-        // Decrypt the location and phone number before sending the response
-        const decryptedBooking = {
-            ...booking,
-            location: decrypt(booking.location),
-            phoneNo: decrypt(booking.phoneNo)
-        };
-
-        res.status(200).json(decryptedBooking);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (!booking) {
+      return res.status(404).json({ error: "Booking not found" });
     }
+
+    // Decrypt the location and phone number before sending the response
+    const decryptedBooking = {
+      ...booking,
+      location: decrypt(booking.location),
+      phoneNo: decrypt(booking.phoneNo)
+    };
+
+    res.status(200).json(decryptedBooking);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 export const deleteBooking = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const booking = await prisma.booking.delete({
-            where: { id: parseInt(id) }
-        });
+  try {
+    const { id } = req.params;
+    const booking = await prisma.booking.delete({
+      where: { id: parseInt(id) }
+    });
 
-        if (!booking) {
-            return res.status(404).json({ error: "Booking not found" });
-        }
-
-        res.status(200).json({ message: "Booking deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (!booking) {
+      return res.status(404).json({ error: "Booking not found" });
     }
+
+    res.status(200).json({ message: "Booking deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
