@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./AdminBooking.css";
-import { getBookings } from "../../api/bookingApi";
+import { getBookings, deleteBooking } from "../../api/bookingApi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const statusLabel = (status) => {
@@ -16,6 +18,26 @@ export default function PoojaBookingAdmin() {
       prev.map((b) => (b.id === id ? { ...b, status: newStatus } : b))
     );
   };
+const handleDelete = async (id) => {
+  try {
+    const data = await deleteBooking(id);
+
+    if (data.success || data.message) {
+      setBookings((prev) =>
+        prev.filter((booking) => booking.id !== id)
+      );
+
+      toast.success("Booking cancelled successfully");
+    }
+
+  } catch (error) {
+    console.error("Delete booking failed:", error);
+
+    toast.error(
+      error.response?.data?.message || "Failed to cancel booking"
+    );
+  }
+};
   useEffect(() => {
     fetchBookings();
   }, []);
@@ -81,11 +103,11 @@ export default function PoojaBookingAdmin() {
                     Confirm
                   </button>
                   <button
-                    className="btn btn-cancel"
-                    onClick={() => updateStatus(booking.id, "cancelled")}
-                  >
-                    Cancel
-                  </button>
+  className="btn btn-cancel"
+  onClick={() => handleDelete(booking.id)}
+>
+  Cancel
+</button>
                 </div>
               </div>
             </div>

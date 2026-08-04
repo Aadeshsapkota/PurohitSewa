@@ -141,3 +141,24 @@
         color: #555;
         line-height: 1.5;
       }
+      .back-home-btn {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: #d97706;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-home-btn:hover {
+  background: #b45309;
+  transform: translateY(-2px);
+}
+
+.back-home-btn:active {
+  transform: translateY(0);
+}

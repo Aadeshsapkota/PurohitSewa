@@ -83,6 +83,15 @@ function BookingForm() {
 
     return (
         <div>
+             <div className="booking-header">
+      <button
+        type="button"
+        className="back-home-btn"
+        onClick={() => navigate("/")}
+      >
+        ← Back to Home
+      </button>
+    </div>
             <form className="booking-form" onSubmit={handleSubmit}>
 
                 <div className="field">
@@ -208,6 +217,8 @@ function BookingForm() {
                 >
                     {isSubmitting ? "Booking..." : "Book Pooja"}
                 </button>
+                
+                
 
             </form>
         </div>
