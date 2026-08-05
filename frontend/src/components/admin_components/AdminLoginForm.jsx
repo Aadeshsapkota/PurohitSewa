@@ -16,15 +16,13 @@ const handleSubmit = async (e) => {
   try {
     const data = await adminLogin(username, password);
 
-    localStorage.setItem("token", data.token);
+    localStorage.setItem("userToken", data.token);
     localStorage.setItem("isAuthenticated", "true");
 
     toast.success("Super Admin Login Successful");
 
     navigate("/admin");
   } catch (err) {
-
-
 
     if (err.response?.status === 401) {
       toast.error("Invalid username or password");

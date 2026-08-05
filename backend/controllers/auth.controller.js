@@ -105,6 +105,8 @@ if (!isMatch) {
   });
 }
 
+console.log(user.role)
+
 
 
 if (user.role !== "SUPERADMIN") {
