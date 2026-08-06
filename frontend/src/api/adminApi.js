@@ -16,12 +16,17 @@ export const adminLogin = async (username, password) => {
   return data;
 };
 
+export const adminLogout = async () => {
+  const { data } = await api.post("/admin/logout");
+  return data;
+};
+
 export const getDashboardStats = async () => {
   const { data } = await api.get("/admin/stats");
   return data;
 };
 
 export const verifyToken = async ()=>{
-  const {data} = await api.post('admin/refresh');
+  const {data} = await api.post('/admin/refresh');
   return data;
 }
