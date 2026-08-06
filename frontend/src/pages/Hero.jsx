@@ -5,33 +5,34 @@ import PurohitProfile from "../components/hero_components/PurohitProfile";
 import Footer from "../components/hero_components/Footer";
 import TrustStrips from "../components/hero_components/TrustStrips";
 import { useNavigate } from "react-router-dom";
+import { verifyToken } from "../api/adminApi";
+import {jwtDecode} from 'jwt-decode';
 
 export default function HeroPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("userToken");
-
-    if (!token) return;
-
-    try {
-      const parts = token.split(".");
-
-      // JWT must have 3 parts
-      if (parts.length !== 3) {
-        localStorage.removeItem("userToken");
-        return;
+    const verifyAccessToken = async () => {
+      try {
+        // Assumes verifyToken() hits the backend with the stored token
+        // and returns something like { role: "SUPERADMIN", ... }
+        // Adjust the destructure below to match your actual API response shape.
+        const data = await verifyToken();
+        const token = data.accessToken;
+        const decoded = jwtDecode(token);
+        const role = decoded.role;
+        console.log(decoded.role);
+        if (role === "SUPERADMIN") {
+          navigate("/admin/dashboard");
+        }
+      } catch (error) {
+        // Token invalid/expired/rejected by server
+        console.error(error);
       }
+    };
 
-      const payload = JSON.parse(atob(parts[1]));
-
-      if (payload.role === "SUPERADMIN") {
-        navigate("/admin/dashboard");
-      }
-    } catch (error) {
-      localStorage.removeItem("userToken");
-    }
-  }, [navigate]);
+    verifyAccessToken();
+  }, []);
 
   return (
     <div className="hero-page">

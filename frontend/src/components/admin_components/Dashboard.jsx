@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import {
   CalendarCheck,
   Clock,
@@ -43,15 +44,18 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [showReminders, setShowReminders] = useState(false);
 
+  const navigate = useNavigate();
+
 useEffect(() => {
   const fetchDashboard = async () => {
     try {
       const data = await getDashboardStats();
-
       setStats(data);
+
      
     } catch (err) {
       console.error(err);
+      navigate('/adminlogin');
     } finally {
       setLoading(false);
     }

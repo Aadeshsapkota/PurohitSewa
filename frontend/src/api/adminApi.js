@@ -20,3 +20,8 @@ export const getDashboardStats = async () => {
   const { data } = await api.get("/admin/stats");
   return data;
 };
+
+export const verifyToken = async ()=>{
+  const {data} = await api.post('admin/refresh');
+  return data;
+}

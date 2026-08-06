@@ -16,7 +16,7 @@ const handleSubmit = async (e) => {
   try {
     const data = await adminLogin(username, password);
 
-    localStorage.setItem("userToken", data.token);
+    localStorage.setItem("userToken", data.accessToken);
     localStorage.setItem("isAuthenticated", "true");
 
     toast.success("Super Admin Login Successful");

@@ -172,79 +172,62 @@ export const login = async (req, res) => {
 // REFRESH TOKEN
 export const refresh = async (req, res) => {
   try {
-
     const token = req.cookies.refreshToken;
 
     if (!token) {
-      return res.status(401).json({
-        message: "Refresh token missing",
-      });
+      return res.status(401).json({ message: "Refresh token missing" });
     }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_REFRESH_SECRET
-    );
+    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
 
     const user = await prisma.user.findUnique({
-      where: {
-        id: decoded.userId,
-      },
+      where: { id: decoded.userId },
     });
 
     if (!user || !user.refreshToken) {
-      return res.status(401).json({
-        message: "Unauthorized",
-      });
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const valid = await bcrypt.compare(
-      token,
-      user.refreshToken
-    );
+    const valid = await bcrypt.compare(token, user.refreshToken);
 
     if (!valid) {
-      return res.status(401).json({
-        message: "Invalid refresh token",
-      });
+      // Clear compromised cookie immediately on invalid match
+      res.clearCookie("refreshToken");
+      return res.status(401).json({ message: "Invalid refresh token" });
     }
 
-    // Rotation
+    // Token Rotation Mechanics
     const newAccessToken = generateAccessToken(user);
-
     const newRefreshToken = generateRefreshToken(user);
+    const hashed = await bcrypt.hash(newRefreshToken, 10);
 
-    const hashed = await bcrypt.hash(
-      newRefreshToken,
-      10
-    );
-
+    // Save the new hashed refresh token to the DB
     await prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        refreshToken: hashed,
-      },
+      where: { id: user.id },
+      data: { refreshToken: hashed },
     });
 
+    // 1. Send the long-lived refresh token via HTTP-Only Cookie
     res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production", // True in prod, false in dev
+      sameSite: "strict", // Blocks CSRF entirely
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 Days
     });
 
-    res.json({
+    // 2. Return short-lived access token directly in the JSON body (Safe from XSS)
+    return res.status(200).json({
+      success: true,
       accessToken: newAccessToken,
     });
 
   } catch (err) {
-    res.status(401).json({
-      message: "Refresh token expired",
-    });
+    // If token expired or verification failed, clear cookie and exit
+    res.clearCookie("refreshToken");
+    return res.status(401).json({ message: "Refresh token expired or invalid" });
   }
 };
+
 
 // LOGOUT
 export const logout = async (req, res) => {
@@ -270,7 +253,7 @@ export const logout = async (req, res) => {
           },
         });
 
-      } catch {}
+      } catch { }
 
     }
 
