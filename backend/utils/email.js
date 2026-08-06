@@ -1,66 +1,120 @@
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
   secure: false,
   auth: {
     user: process.env.ADMIN_EMAIL,
     pass: process.env.ADMIN_PASSWORD,
-    
   },
 });
 
-
-export const sendEmail = async (payload) => {
-  const {
-    userName,
-    poojaType,
-    location,
-    phoneNo,
-    poojaDate,
-    poojaTime,
-  } = payload;
-
+export const sendEmail = async ({
+  userName,
+  poojaType,
+  location,
+  phoneNo,
+  poojaDate,
+  poojaTime,
+}) => {
   await transporter.sendMail({
-  from: process.env.ADMIN_EMAIL,
-  to: process.env.RECEIVER_EMAIL,
-  subject: "🛕 New Pooja Booking Received",
-  html: `
-    <div style="max-width:600px;margin:auto;font-family:Arial,sans-serif;background:#f8f9fa;padding:30px;border-radius:10px;">
+    from: `"🛕 Purohit Sewa" <${process.env.ADMIN_EMAIL}>`,
+    to: process.env.RECEIVER_EMAIL,
+    subject: `🛕 New ${poojaType} Booking`,
+    html: `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
 
-      <div style="text-align:center;padding-bottom:20px;border-bottom:2px solid #e5e5e5;">
-        <h1 style="color:#d97706;margin:0;">🛕 Purohit Sewa</h1>
-        <p style="color:#666;margin-top:8px;">A new booking has been received.</p>
-      </div>
+<body style="margin:0;padding:30px;background:#f3f4f6;font-family:Arial,sans-serif;">
 
-      <div style="background:#fff;padding:25px;border-radius:10px;margin-top:20px;box-shadow:0 2px 8px rgba(0,0,0,.08);">
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td align="center">
 
-        <p style="font-size:16px;">
-          <strong>👤 Customer:</strong> ${userName}
-        </p>
+<table width="650" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.08);">
 
-        <p style="font-size:16px;">
-          <strong>🙏 Pooja Type:</strong> ${poojaType}
-        </p>
+<tr>
+<td style="background:#d97706;padding:30px;text-align:center;color:white;">
+<h1 style="margin:0;">🛕 Purohit Sewa</h1>
+<p style="margin-top:10px;">
+New Booking Received
+</p>
+</td>
+</tr>
 
-        <p style="font-size:16px;">
-          <strong>📅 Date:</strong> ${new Date(poojaDate).toLocaleDateString()}
-        </p>
+<tr>
+<td style="padding:35px;">
 
-        <p style="font-size:16px;">
-          <strong>🕒 Time:</strong> ${poojaTime}
-        </p>
+<p style="font-size:16px;color:#444;">
+A new customer has submitted a booking.
+</p>
 
-      </div>
+<table width="100%" cellpadding="12" cellspacing="0" style="border-collapse:collapse;">
 
-      <div style="margin-top:25px;text-align:center;color:#888;font-size:13px;">
-        <p>This email was generated automatically by <strong>Purohit Sewa</strong>.</p>
-      </div>
+<tr style="background:#fafafa;">
+<td><strong>👤 Customer</strong></td>
+<td>${userName}</td>
+</tr>
 
-    </div>
-  `,
-});
+<tr>
+<td><strong>🙏 Pooja</strong></td>
+<td>${poojaType}</td>
+</tr>
 
-  
+<tr style="background:#fafafa;">
+<td><strong>📍 Location</strong></td>
+<td>${location}</td>
+</tr>
+
+<tr>
+<td><strong>📞 Phone</strong></td>
+<td>${phoneNo}</td>
+</tr>
+
+<tr style="background:#fafafa;">
+<td><strong>📅 Date</strong></td>
+<td>${new Date(poojaDate).toLocaleDateString()}</td>
+</tr>
+
+<tr>
+<td><strong>🕒 Time</strong></td>
+<td>${poojaTime}</td>
+</tr>
+
+</table>
+
+<div style="margin-top:35px;padding:18px;background:#fff7ed;border-left:5px solid #d97706;border-radius:6px;">
+<b>Admin Action</b><br><br>
+Please contact the customer as soon as possible to confirm this booking.
+</div>
+
+</td>
+</tr>
+
+<tr>
+<td style="background:#f8f8f8;padding:25px;text-align:center;color:#777;font-size:13px;">
+
+<b>Purohit Sewa</b><br>
+
+This is an automated booking notification.<br>
+
+© ${new Date().getFullYear()} Purohit Sewa. All rights reserved.
+
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+`,
+  });
 };

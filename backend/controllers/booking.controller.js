@@ -102,9 +102,13 @@ export const createBooking = async (req, res) => {
         phoneNo,
         poojaDate,
         poojaTime,
+        
       });
-    } catch (emailError) {
-      console.error("Email Error:", emailError.message);
+    } catch (error) {
+      return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
     }
 
     return res.status(201).json({
