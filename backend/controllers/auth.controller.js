@@ -85,8 +85,8 @@ export const register = async (req, res) => {
 
   } catch (err) {
     res.status(500).json({
-      message: err.message,
-    });
+message:"Internal Server Error"
+});
   }
 };
 
@@ -163,9 +163,9 @@ export const login = async (req, res) => {
     });
 
   } catch (err) {
-    return res.status(500).json({
-      message: err.message,
-    });
+    res.status(500).json({
+message:"Internal Server Error"
+});
   }
 };
 
@@ -222,9 +222,9 @@ export const refresh = async (req, res) => {
     });
 
   } catch (err) {
-    // If token expired or verification failed, clear cookie and exit
-    res.clearCookie("refreshToken");
-    return res.status(401).json({ message: "Refresh token expired or invalid" });
+    res.status(401).json({
+      message: "Refresh token expired",
+    });
   }
 };
 
@@ -270,7 +270,7 @@ export const logout = async (req, res) => {
 
   } catch (err) {
     res.status(500).json({
-      message: err.message,
-    });
+message:"Internal Server Error"
+});
   }
 };

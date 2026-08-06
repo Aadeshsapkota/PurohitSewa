@@ -90,16 +90,17 @@ export const createBooking = async (req, res) => {
       poojaDate,
       poojaTime,
     }).catch((err) => {
-      console.error("Email Error:", err.message);
+      res.status(500).json({
+message:"Internal Server Error"
+});
     });
 
   } catch (error) {
-    console.error(error);
+    
 
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    res.status(500).json({
+message:"Internal Server Error"
+});
   }
 };
 
@@ -123,10 +124,9 @@ export const getBookings = async (req, res) => {
       bookings: decryptedBookings,
     });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    res.status(500).json({
+message:"Internal Server Error"
+});
   }
 };
 
@@ -140,7 +140,9 @@ export const getBookingById = async (req, res) => {
     });
 
     if (!booking) {
-      return res.status(404).json({ error: "Booking not found" });
+      res.status(500).json({
+message:"Booking not found."
+});
     }
 
     // Decrypt the location and phone number before sending the response
@@ -152,7 +154,9 @@ export const getBookingById = async (req, res) => {
 
     res.status(200).json(decryptedBooking);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({
+message:"Internal Server Error"
+});
   }
 };
 
@@ -169,6 +173,8 @@ export const deleteBooking = async (req, res) => {
 
     res.status(200).json({ message: "Booking deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({
+message:"Internal Server Error"
+});
   }
 };

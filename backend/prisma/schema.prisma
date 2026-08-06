@@ -19,6 +19,7 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+
 model Booking {
   id        Int      @id @default(autoincrement())
   poojaType String
@@ -33,11 +34,13 @@ model Booking {
   @@map("bookings")
 }
 
+
 enum Role {
   USER
   ADMIN
   SUPERADMIN
 }
+
 
 enum Status {
   PENDING
