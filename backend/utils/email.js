@@ -3,14 +3,14 @@ import nodemailer from "nodemailer";
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
-  secure: false,
+  secure: Number(process.env.SMTP_PORT) === 465,
   auth: {
     user: process.env.ADMIN_EMAIL,
     pass: process.env.ADMIN_PASSWORD,
   },
 });
 
-export const sendEmail = async ({
+export const sendEmail = ({
   userName,
   poojaType,
   location,
@@ -18,7 +18,7 @@ export const sendEmail = async ({
   poojaDate,
   poojaTime,
 }) => {
-  await transporter.sendMail({
+  return transporter.sendMail({
     from: `"🛕 Purohit Sewa" <${process.env.ADMIN_EMAIL}>`,
     to: process.env.RECEIVER_EMAIL,
     subject: `🛕 New ${poojaType} Booking`,

@@ -66,54 +66,68 @@ const handleDelete = async (id) => {
       </header>
 
       <div className="container">
-        <div className="grid">
-          {bookings.map((booking) => (
-            <div key={booking.id} className="card">
-              <div className="card-top">
-                <span className="pooja-name">{booking.poojaType}</span>
-                <span className="om-symbol">{"\u0950"}</span>
-              </div>
+       <div className="grid">
+  {bookings.length === 0 ? (
+    <div className="no-bookings">
+      <h2>No Bookings Found</h2>
+      <p>There are currently no pooja bookings.</p>
+    </div>
+  ) : (
+    bookings.map((booking) => (
+      <div key={booking.id} className="card">
+        <div className="card-top">
+          <span className="pooja-name">{booking.poojaType}</span>
+          <span className="om-symbol">{"\u0950"}</span>
+        </div>
 
-              <div className="detail-row">
-                <span className="detail-label">Customer:</span> {booking.userName}
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Date:</span> {new Date(booking.poojaDate).toLocaleDateString()}
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Time:</span> {booking.poojaTime}
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Phone:</span> {booking.phoneNo}
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Location:</span> {booking.location}
-              </div>
+        <div className="detail-row">
+          <span className="detail-label">Customer:</span> {booking.userName}
+        </div>
+        <div className="detail-row">
+          <span className="detail-label">Date:</span>{" "}
+          {new Date(booking.poojaDate).toLocaleDateString()}
+        </div>
+        <div className="detail-row">
+          <span className="detail-label">Time:</span> {booking.poojaTime}
+        </div>
+        <div className="detail-row">
+          <span className="detail-label">Phone:</span> {booking.phoneNo}
+        </div>
+        <div className="detail-row">
+          <span className="detail-label">Location:</span> {booking.location}
+        </div>
 
-              <div className="status-row">
-                <span className={`status ${booking.status || "pending"}`}>
-                  {statusLabel(booking.status)}
-                </span>
+        <div className="status-row">
+          <span className={`status ${booking.status || "pending"}`}>
+            {statusLabel(booking.status)}
+          </span>
 
-                <div className="btn-row">
-                  <button
-                    className="btn btn-confirm"
-                    onClick={() => updateStatus(booking.id, "completed")}
-                  >
-                    Confirm
-                  </button>
-                  <button
-  className="btn btn-cancel"
-  onClick={() => handleDelete(booking.id)}
->
-  Cancel
-</button>
-                </div>
-              </div>
-            </div>
-          ))}
+          <div className="btn-row">
+            <button
+              className="btn btn-confirm"
+              onClick={() => updateStatus(booking.id, "completed")}
+            >
+              Confirm
+            </button>
+
+            <button
+              className="btn btn-cancel"
+              onClick={() => handleDelete(booking.id)}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
+    ))
+  )}
+</div>
+      </div>
+      <ToastContainer
+      position="top-right"
+      autoClose={3000}
+      theme="colored"
+    />
     </div>
   );
 }

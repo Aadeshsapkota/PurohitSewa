@@ -4,9 +4,6 @@ import { sendEmail } from "../utils/email.js";
 
 export const createBooking = async (req, res) => {
   try {
-
-
-
     const userName = req.body.userName?.trim();
     const poojaType = req.body.poojaType?.trim();
     const location = req.body.location?.trim();
@@ -23,19 +20,18 @@ export const createBooking = async (req, res) => {
       !poojaTime
     ) {
       return res.status(400).json({
-        error: "All fields are required",
+        success: false,
+        message: "All fields are required",
       });
     }
 
-    // Customer name validation
     if (userName.length < 2) {
       return res.status(400).json({
         success: false,
-        message: "userName must be at least 2 characters.",
+        message: "Username must be at least 2 characters.",
       });
     }
 
-    // Phone number validation
     if (!/^\+?[0-9]{10,15}$/.test(phoneNo)) {
       return res.status(400).json({
         success: false,
@@ -43,7 +39,6 @@ export const createBooking = async (req, res) => {
       });
     }
 
-    // Date validation
     if (isNaN(Date.parse(poojaDate))) {
       return res.status(400).json({
         success: false,
@@ -52,71 +47,55 @@ export const createBooking = async (req, res) => {
     }
 
     const lastBooking = await prisma.booking.findFirst({
-      where: {
-        userName,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
+      where: { userName },
+      orderBy: { createdAt: "desc" },
     });
 
     if (lastBooking) {
-      const now = new Date();
-      const lastTime = new Date(lastBooking.createdAt);
-      const diff = now.getTime() - lastTime.getTime();
-      const oneDay = 24 * 60 * 60 * 1000;
+      const diff = Date.now() - new Date(lastBooking.createdAt).getTime();
 
-      if (diff < oneDay) {
+      if (diff < 24 * 60 * 60 * 1000) {
         return res.status(400).json({
+          success: false,
           message:
-            "You have already booked a Pooja. Please wait 24 hours before booking again, or contact the Guru for assistance.",
+            "You have already booked a Pooja. Please wait 24 hours before booking again.",
         });
       }
     }
-    let booking;
 
-    try {
-      booking = await prisma.booking.create({
-        data: {
-          userName,
-          poojaType,
-          location:encrypt(location),
-          phoneNo:encrypt(phoneNo),
-          poojaDate: new Date(poojaDate),
-          poojaTime,
-        },
-      });
-
-    } catch (error) {
-      return res.status(500).json({
-        success: false,
-        message: "Can't connect to the database: " + error.message,
-      });
-    }
-
-    try {
-      await sendEmail({
+    const booking = await prisma.booking.create({
+      data: {
         userName,
         poojaType,
-        location,
-        phoneNo,
-        poojaDate,
+        location: encrypt(location),
+        phoneNo: encrypt(phoneNo),
+        poojaDate: new Date(poojaDate),
         poojaTime,
-        
-      });
-    } catch (error) {
-      return res.status(500).json({
-      success: false,
-      message: error.message,
+      },
     });
-    }
 
-    return res.status(201).json({
+    // Return response immediately
+    res.status(201).json({
       success: true,
-      message: "Booking created successfully",
+      message: "Booking created successfully.",
       booking,
     });
+
+    // Send email in background
+    sendEmail({
+      userName,
+      poojaType,
+      location,
+      phoneNo,
+      poojaDate,
+      poojaTime,
+    }).catch((err) => {
+      console.error("Email Error:", err.message);
+    });
+
   } catch (error) {
+    console.error(error);
+
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -138,18 +117,19 @@ export const getBookings = async (req, res) => {
       phoneNo: decrypt(booking.phoneNo),
     }));
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       total: decryptedBookings.length,
       bookings: decryptedBookings,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
+
 
 
 export const getBookingById = async (req, res) => {
