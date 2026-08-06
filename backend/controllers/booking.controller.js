@@ -4,16 +4,15 @@ import { sendEmail } from "../utils/email.js";
 
 export const createBooking = async (req, res) => {
   try {
-    const {
-      userName,
-      poojaType,
-      location,
-      phoneNo,
-      poojaDate,
-      poojaTime,
-    } = req.body;
 
-    console.log(userName,poojaDate,poojaTime,poojaType,location);
+
+
+    const userName = req.body.userName?.trim();
+    const poojaType = req.body.poojaType?.trim();
+    const location = req.body.location?.trim();
+    const phoneNo = req.body.phoneNo?.trim();
+    const poojaDate = req.body.poojaDate;
+    const poojaTime = req.body.poojaTime?.trim();
 
     if (
       !userName ||
@@ -29,7 +28,7 @@ export const createBooking = async (req, res) => {
     }
 
     // Customer name validation
-    if (userName.trim().length < 2) {
+    if (userName.length < 2) {
       return res.status(400).json({
         success: false,
         message: "userName must be at least 2 characters.",
@@ -95,14 +94,18 @@ export const createBooking = async (req, res) => {
       });
     }
 
-    await sendEmail({
-      userName,
-      poojaType,
-      location,
-      phoneNo,
-      poojaDate,
-      poojaTime,
-    });
+    try {
+      await sendEmail({
+        userName,
+        poojaType,
+        location,
+        phoneNo,
+        poojaDate,
+        poojaTime,
+      });
+    } catch (emailError) {
+      console.error("Email Error:", emailError.message);
+    }
 
     return res.status(201).json({
       success: true,

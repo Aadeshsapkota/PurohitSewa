@@ -3,40 +3,64 @@ import jwt from "jsonwebtoken";
 import prisma from "../utils/prisma.js";
 
 const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+// Generate Tokens
+const generateAccessToken = (user) => {
+  return jwt.sign(
+    {
+      userId: user.id,
+      role: user.role,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "15m",
+    }
+  );
+};
+
+const generateRefreshToken = (user) => {
+  return jwt.sign(
+    {
+      userId: user.id,
+    },
+    process.env.JWT_REFRESH_SECRET,
+    {
+      expiresIn: "7d",
+    }
+  );
+};
 
 // REGISTER
 export const register = async (req, res) => {
   try {
     let { username, password } = req.body;
 
-    // Trim
     username = username?.trim();
 
-    // Empty validation
     if (!username || !password) {
       return res.status(400).json({
         message: "All fields are required",
       });
     }
 
-    // Name validation
     if (username.length < 3) {
       return res.status(400).json({
-        message: "Name must be at least 3 characters",
+        message: "Username must be at least 3 characters",
       });
     }
 
-    // Password validation
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         message:
-          "Password must contain 8+ chars, uppercase, lowercase, number and special character",
+          "Password must contain uppercase, lowercase, number and special character.",
       });
     }
 
     const existingUser = await prisma.user.findUnique({
-      where: { username },
+      where: {
+        username,
+      },
     });
 
     if (existingUser) {
@@ -47,26 +71,20 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         username,
         password: hashedPassword,
       },
-      select: {
-        id: true,
-        username: true,
-        role: true,
-        createdAt: true,
-      },
     });
 
-    return res.status(201).json({
+    res.status(201).json({
+      success: true,
       message: "User registered successfully",
-      username,
     });
+
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({
+    res.status(500).json({
       message: err.message,
     });
   }
@@ -77,67 +95,198 @@ export const login = async (req, res) => {
   try {
     let { username, password } = req.body;
 
-    // Empty validation
+    username = username?.trim();
+
     if (!username || !password) {
       return res.status(400).json({
-        message: "username and password are required",
+        message: "Username and Password required",
       });
     }
 
-   const user = await prisma.user.findUnique({
-  where: { username },
-});
-
-if (!user) {
-  return res.status(401).json({
-    message: "Invalid username or password",
-  });
-}
-
-
-const isMatch = await bcrypt.compare(password, user.password);
-
-
-
-if (!isMatch) {
-  return res.status(401).json({
-    message: "Invalid username or password",
-  });
-}
-
-console.log(user.role)
-
-
-
-if (user.role !== "SUPERADMIN") {
-  return res.status(403).json({
-    success: false,
-    message: "Access denied! Admin only.",
-  });
-}
-
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        role: user.role,
+    const user = await prisma.user.findUnique({
+      where: {
+        username,
       },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Invalid username or password",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "Invalid username or password",
+      });
+    }
+
+    if (user.role !== "SUPERADMIN") {
+      return res.status(403).json({
+        message: "Access denied! Admin only.",
+      });
+    }
+
+    const accessToken = generateAccessToken(user);
+
+    const refreshToken = generateRefreshToken(user);
+
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        refreshToken: hashedRefreshToken,
+      },
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     return res.status(200).json({
-      success:true,
+      success: true,
       message: "Login successful",
-      token,
+      accessToken,
       user: {
         id: user.id,
         username: user.username,
         role: user.role,
       },
     });
+
   } catch (err) {
-    console.error(err);
     return res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
+// REFRESH TOKEN
+export const refresh = async (req, res) => {
+  try {
+
+    const token = req.cookies.refreshToken;
+
+    if (!token) {
+      return res.status(401).json({
+        message: "Refresh token missing",
+      });
+    }
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_REFRESH_SECRET
+    );
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: decoded.userId,
+      },
+    });
+
+    if (!user || !user.refreshToken) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const valid = await bcrypt.compare(
+      token,
+      user.refreshToken
+    );
+
+    if (!valid) {
+      return res.status(401).json({
+        message: "Invalid refresh token",
+      });
+    }
+
+    // Rotation
+    const newAccessToken = generateAccessToken(user);
+
+    const newRefreshToken = generateRefreshToken(user);
+
+    const hashed = await bcrypt.hash(
+      newRefreshToken,
+      10
+    );
+
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        refreshToken: hashed,
+      },
+    });
+
+    res.cookie("refreshToken", newRefreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.json({
+      accessToken: newAccessToken,
+    });
+
+  } catch (err) {
+    res.status(401).json({
+      message: "Refresh token expired",
+    });
+  }
+};
+
+// LOGOUT
+export const logout = async (req, res) => {
+  try {
+
+    const token = req.cookies.refreshToken;
+
+    if (token) {
+
+      try {
+
+        const decoded = jwt.verify(
+          token,
+          process.env.JWT_REFRESH_SECRET
+        );
+
+        await prisma.user.update({
+          where: {
+            id: decoded.userId,
+          },
+          data: {
+            refreshToken: null,
+          },
+        });
+
+      } catch {}
+
+    }
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.json({
+      success: true,
+      message: "Logout successful",
+    });
+
+  } catch (err) {
+    res.status(500).json({
       message: err.message,
     });
   }
