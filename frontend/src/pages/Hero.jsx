@@ -14,9 +14,6 @@ export default function HeroPage() {
   useEffect(() => {
     const verifyAccessToken = async () => {
       try {
-        // Assumes verifyToken() hits the backend with the stored token
-        // and returns something like { role: "SUPERADMIN", ... }
-        // Adjust the destructure below to match your actual API response shape.
         const data = await verifyToken();
         const token = data.accessToken;
         const decoded = jwtDecode(token);
