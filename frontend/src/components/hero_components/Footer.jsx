@@ -44,15 +44,11 @@ function Footer() {
           </p>
 
           <div className="social-links">
-            <a href="#">
+            <a href="https://www.facebook.com/share/18BWwtSaAz/?mibextid=wwXIfr">
               <FaFacebookF />
             </a>
 
-            <a href="#">
-              <FaInstagram />
-            </a>
-
-            <a href="#">
+            <a href="https://wa.me/qr/JIGT4LJSTBWAK1">
               <FaWhatsapp />
             </a>
           </div>
@@ -88,7 +84,7 @@ function Footer() {
           <h4>Contact</h4>
 
           <p>
-            <FaPhoneAlt /> +61 XXX XXX XXX
+            <FaPhoneAlt /> +61 414 521 238
           </p>
 
           <p>

@@ -21,7 +21,7 @@ const handleLogout = async () => {
   try {
     await adminLogout();
 
-    localStorage.removeItem("token"); // or accessToken
+    localStorage.removeItem("userToken");
 
     navigate("/");
   } catch (err) {

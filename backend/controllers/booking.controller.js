@@ -10,7 +10,7 @@ export const createBooking = async (req, res) => {
     const phoneNo = req.body.phoneNo?.trim();
     const poojaDate = req.body.poojaDate;
     const poojaTime = req.body.poojaTime?.trim();
-
+    
     if (
       !userName ||
       !poojaType ||
